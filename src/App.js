@@ -1,7 +1,14 @@
+import React, { Fragment } from 'react'
 
-function App(){
+/***COMPONESTES***/
+//Layout
+import Header from './components/layout/Header';
+
+function App(){ //dentro del return es jsx por lo cual se comenta distinto
   return(
-    <h1>Hola</h1>
+    <Fragment> {/* */}
+      <Header />{/*forma de realizar el renderizado de un componente*/}
+    </Fragment>
   )
 }
 
