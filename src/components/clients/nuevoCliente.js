@@ -1,6 +1,10 @@
 import React, { Fragment, useState } from 'react';
+import Swal from 'sweetalert2';
+import { withRouter } from 'react-router-dom'
 
-function NuevoCliente() {
+import clienteAxios from '../../config/axios';
+
+function NuevoCliente({history}) {//permite redirreccionar
 
     const [cliente, guardarCliente ] = useState({ // iniciaralizar {} porque es un objeto
         nombre: '',
@@ -19,6 +23,32 @@ function NuevoCliente() {
         })
     }
 
+    const agregarCliente = e => {
+        e.preventDefault();
+
+        //enviar peticion
+        clienteAxios.post('/clientes', cliente)
+        .then(res => {
+            //console.log(res);
+            if(res.data.code === 11000) { // error de mongo
+                //console.log('error de dublicado') //error
+                Swal.fire({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: 'Ya existe un cliente ligado a ese correo'
+                })
+            } else {
+                Swal.fire(
+                    'Exito!',
+                    res.data.msj, //msj propiedad de la respuesta del back
+                    'success'
+                )
+                //console.log(res.data); //ok
+            }
+            history.push('/');//redireccion
+        })
+    }
+
     //validar cliente
     const validarCliente = () => {
         //desestructuracion
@@ -33,7 +63,7 @@ function NuevoCliente() {
     return (
         <Fragment>
             <h2>Nuevo Cliente</h2>
-            <form >
+            <form onSubmit={agregarCliente}>
                 <legend>Llena todos los campos</legend>
 
                 <div className="campo">
@@ -79,7 +109,7 @@ function NuevoCliente() {
                 <div className="campo">
                     <label>Teléfono:</label>
                     <input 
-                        type="email" 
+                        type="tel" 
                         placeholder="Teléfono Cliente" 
                         name="telefono" 
                         onChange={actualizarState}
@@ -91,7 +121,7 @@ function NuevoCliente() {
                         type="submit" 
                         className="btn btn-azul" 
                         value="Agregar Cliente" 
-                        disable={ validarCliente() }
+                        disabled={ validarCliente() }
                     />
                 </div>
 
@@ -100,4 +130,5 @@ function NuevoCliente() {
     )
 }
 
-export default NuevoCliente;
+//HOC funcion que toma un componente y retorna otro
+export default withRouter(NuevoCliente);
