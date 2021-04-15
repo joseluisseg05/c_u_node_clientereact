@@ -14,14 +14,14 @@ function Clientes() {
   //Query API
   const consultarAPI = async () => {
     const clientesConsulta = await clienteAxios.get('/clientes');
-    console.log(clientesConsulta.data.clientes);
+    //console.log(clientesConsulta.data.clientes);
     //colocar resul en state
     guardarClientes(clientesConsulta.data.clientes);
   }
 
   useEffect( ()=> { //se carga automaticamente al cargar la pagina 
     consultarAPI()//separara metodos para buenas practicas 
-  }, []);//para que se ejecute una vez
+  }, [clientes]);//cuando clientes cambie se ejecuta
 
   return (
     <Fragment>
