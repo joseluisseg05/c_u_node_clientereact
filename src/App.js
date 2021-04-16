@@ -15,6 +15,8 @@ import EditarCliente from './components/clients/EditarCliente';
 
 //productos
 import Productos from './components/product/Productos';
+import NuevoProducto from './components/product/NuevoProducto';
+import EditarProducto from './components/product/EditarProducto';
 
 //pedidos
 import Pedidos from './components/pedidos/Pedidos';
@@ -33,6 +35,8 @@ function App(){ //dentro del return es jsx por lo cual se comenta distinto
               <Route exact path="/clientes/editar/:id" component={EditarCliente} />
 
               <Route exact path="/productos" component={Productos} />
+              <Route exact path="/productos/nuevo" component={NuevoProducto} />
+              <Route exact path="/productos/editar/:id" component={EditarProducto} />
 
               <Route exact path="/pedidos" component={Pedidos} />
             </Switch>
