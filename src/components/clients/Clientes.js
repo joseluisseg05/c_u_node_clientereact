@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import clienteAxios from '../../config/axios';
 import Cliente from './Cliente';
 
+import Spinner from '../layout/Spinner';
+
 function Clientes() {
 
   //trabajar con state
@@ -22,6 +24,9 @@ function Clientes() {
   useEffect( ()=> { //se carga automaticamente al cargar la pagina 
     consultarAPI()//separara metodos para buenas practicas 
   }, [clientes]);//cuando clientes cambie se ejecuta
+
+  //spinner
+  if(!clientes.length) return <Spinner/>
 
   return (
     <Fragment>
