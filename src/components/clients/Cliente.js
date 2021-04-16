@@ -21,7 +21,7 @@ function Cliente({cliente}) {
             if (result.isConfirmed) {
                 clienteAxios.delete(`/clientes/${id}`).then( res => {
                     Swal.fire(
-                        'Eliminado!',
+                        'Exito!',
                         res.data.msj,
                         'success'
                     )

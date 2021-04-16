@@ -14,7 +14,7 @@ function Productos() {
 
   useEffect( () => {
     consultarAPI()   
-  }, [])
+  }, [productos])
 
   return (
     <Fragment>
