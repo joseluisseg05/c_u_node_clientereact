@@ -1,7 +1,10 @@
 import React, {useState, useEffect, Fragment } from 'react'
+import Swal from 'sweetalert2';
+
 import clienteAxios from '../../config/axios';
 
 import FormBuscar from './FormBuscarProducto';
+import FormCantidad from './FormCantidadaProducto';
 
 function NuevoPedido(props) {
 
@@ -9,25 +12,47 @@ function NuevoPedido(props) {
     const { id } = props.match.params;
 
     const [cliente, guardarCliente] = useState({});
-
-    
+    const [busqueda, guardarBusqueda] = useState('');
+    const [productos, guardarProductos] = useState([]);
     
     useEffect( ()=> {
         //obtener cliente
-        const consultarAPI2 = async() => {
+        const consultarAPI = async() => {
             const resultado = await clienteAxios.get(`/clientes/${id}`);
             guardarCliente(resultado.data.cliente);
         }
 
-        consultarAPI2();
+        consultarAPI();
     }, []);
 
-    const buscarProducto = () => {
+    const buscarProducto = async e => {
+        e.preventDefault();
+        //obtener los productos de la busqueda
+        const resultadosBusqueda = await clienteAxios.post(`/productos/busqueda/${busqueda}`);
 
+        if(resultadosBusqueda.data.producto[0]){ //obtiene el primer resultado de la busqueda
+            let productoResul = resultadosBusqueda.data.producto[0];
+
+            productoResul.producto = resultadosBusqueda.data.producto[0]._id;
+            productoResul.cantidad = 0;
+
+            guardarProductos([
+                ...productos, //copia de los productos
+                productoResul//lo que se va a agregar al state
+            ])
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No hay resulados para esta busqueda'
+            })
+        }
+        //console.log(resultadosBusqueda)
     }
 
-    const leerDatosBusqueda = () => {
-
+    //almacenar la busqueda en el state
+    const leerDatosBusqueda = e => {
+        guardarBusqueda( e.target.value ); //obtiene el valor de la caja de texto 
     }
 
     return (
@@ -45,57 +70,12 @@ function NuevoPedido(props) {
             />
 
             <ul className="resumen">
-                <li>
-                    <div className="texto-producto">
-                        <p className="nombre">Macbook Pro</p>
-                        <p className="precio">$250</p>
-                    </div>
-                    <div className="acciones">
-                        <div className="contenedor-cantidad">
-                            <i className="fas fa-minus"></i>
-                            <input type="text" name="cantidad" />
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button type="button" className="btn btn-rojo">
-                            <i className="fas fa-minus-circle"></i>
-                                Eliminar Producto
-                        </button>
-                    </div>
-                </li>
-                <li>
-                    <div className="texto-producto">
-                        <p className="nombre">Macbook Pro</p>
-                        <p className="precio">$250</p>
-                    </div>
-                    <div className="acciones">
-                        <div className="contenedor-cantidad">
-                            <i className="fas fa-minus"></i>
-                            <input type="text" name="cantidad" />
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button type="button" className="btn btn-rojo">
-                            <i className="fas fa-minus-circle"></i>
-                                Eliminar Producto
-                        </button>
-                    </div>
-                </li>
-                <li>
-                    <div className="texto-producto">
-                        <p className="nombre">Macbook Pro</p>
-                        <p className="precio">$250</p>
-                    </div>
-                    <div className="acciones">
-                        <div className="contenedor-cantidad">
-                            <i className="fas fa-minus"></i>
-                            <input type="text" name="cantidad" />
-                            <i className="fas fa-plus"></i>
-                        </div>
-                        <button type="button" className="btn btn-rojo">
-                            <i className="fas fa-minus-circle"></i>
-                                Eliminar Producto
-                        </button>
-                    </div>
-                </li>
+                {productos.map((producto, index) => (
+                    <FormCantidad 
+                        key={producto.producto}
+                        producto={producto}
+                    />
+                ))}
             </ul>
             <div className="campo">
                 <label>Total:</label>
