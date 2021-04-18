@@ -26,7 +26,7 @@ function NuevoPedido(props) {
         consultarAPI();
 
         actualizarTotal();
-    }, [productos]);
+    }, [productos]);//cada que productos cambie 
 
     const buscarProducto = async e => {
         e.preventDefault();
@@ -75,6 +75,13 @@ function NuevoPedido(props) {
         guardarProductos(todosProductos)//guardar
     }
 
+    //eliminar producto de state
+    const eliminarProductoPedido = id => {
+        //el producto que se quire eliminar se quita del state manteniendo todos los demas 
+        const todosProductos = productos.filter(producto=> producto.producto !== id);
+        guardarProductos(todosProductos)
+    }
+
     //actualizar total 
     const actualizarTotal = ()=> {
         if(productos.length === 0) {
@@ -111,6 +118,7 @@ function NuevoPedido(props) {
                         producto={producto}
                         restarProductos={restarProductos}
                         aumentarProductos={aumentarProductos}
+                        eliminarProductoPedido={eliminarProductoPedido}
                         index={index}
                     />
                 ))}

@@ -2,7 +2,7 @@ import React from 'react'
 
 function FormCantidadProducto(props) {
     
-    const { producto, restarProductos, aumentarProductos, index } = props;
+    const { producto, restarProductos, aumentarProductos, eliminarProductoPedido, index } = props;
 
     return (
         <li>
@@ -22,7 +22,11 @@ function FormCantidadProducto(props) {
                         onClick={ ()=> aumentarProductos(index) }>    
                     </i>
                 </div>
-                <button type="button" className="btn btn-rojo">
+                <button 
+                    type="button" 
+                    className="btn btn-rojo"
+                    onClick={()=> eliminarProductoPedido(producto._id)}
+                >
                     <i className="fas fa-minus-circle"></i>
                     Eliminar Producto
                 </button>

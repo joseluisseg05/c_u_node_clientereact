@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'; {/* evita que se tenga el efecto de regarca para parecer una sola pagina*/}
+import { Link } from 'react-router-dom'; // evita que se tenga el efecto de regarca para parecer una sola pagina
 
 const Navegacion = () => {
     return(

@@ -1,8 +1,8 @@
 import React from 'react'
 
-{/* Forma de poner un comentario en JSX */}
+/* Forma de poner un comentario en JSX */
 
-{/*
+/*
 // para la creacion de un componente puede ser :
     const Header = () => {
         return (<h1>Hola</h1>)
@@ -12,7 +12,7 @@ import React from 'react'
         <h1>Hola</h1>
     )
     
-*/}
+*/
 
 const Header = () => {
     return (
