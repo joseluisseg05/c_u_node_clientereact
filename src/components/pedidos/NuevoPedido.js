@@ -55,6 +55,23 @@ function NuevoPedido(props) {
         guardarBusqueda( e.target.value ); //obtiene el valor de la caja de texto 
     }
 
+    //actualizar cantidad
+    const restarProductos = indice => {//indice es la posicion de los productos dentro del state
+        const todosProductos = [...productos];//copiar el arreglo original
+
+        //si es 0 no restar mas
+        if(todosProductos[indice].cantidad === 0) return;
+
+        todosProductos[indice].cantidad --;//decremento
+
+        guardarProductos(todosProductos)//almacenar
+    }
+    const aumentarProductos = indice => {
+        const todosProductos = [...productos];//copia
+        todosProductos[indice].cantidad ++; //incremento
+        guardarProductos(todosProductos)//guardar
+    }
+
     return (
         <Fragment>
             <h2>Nuevo Pedido</h2>
@@ -74,6 +91,9 @@ function NuevoPedido(props) {
                     <FormCantidad 
                         key={producto.producto}
                         producto={producto}
+                        restarProductos={restarProductos}
+                        aumentarProductos={aumentarProductos}
+                        index={index}
                     />
                 ))}
             </ul>
