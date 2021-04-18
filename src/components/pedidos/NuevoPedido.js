@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Fragment } from 'react'
 import Swal from 'sweetalert2';
+import {withRouter} from 'react-router-dom'
 
 import clienteAxios from '../../config/axios';
 
@@ -97,6 +98,35 @@ function NuevoPedido(props) {
         guardarTotal(nuevoTotal);
     }
 
+    const realizarPedido = async e => {
+        e.preventDefault();
+
+        //objeto 
+        const pedido = {
+            "cliente": id,
+            "pedido": productos,
+            "total": total
+        }
+
+        const resultado = await clienteAxios.post('/pedidos', pedido)
+
+        if(resultado.status === 200){
+            Swal.fire({
+                icon: 'success',
+                title: 'Exito',
+                text: resultado.data.msj
+            })
+        }else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Vuelva a intentarlo'
+            })
+        }
+
+        props.history.push('/pedidos')
+    }
+
     return (
         <Fragment>
             <h2>Nuevo Pedido</h2>
@@ -126,7 +156,7 @@ function NuevoPedido(props) {
            <p className="total">Total a Pagar: <span>${total}</span></p>
             {
                 total > 0 ? (
-                    <form>
+                    <form onSubmit={realizarPedido}>
                         <input 
                             type="submit"
                             className="btn btn-verde btn-block"
@@ -139,4 +169,4 @@ function NuevoPedido(props) {
     )
 }
 
-export default NuevoPedido;
+export default withRouter(NuevoPedido);
