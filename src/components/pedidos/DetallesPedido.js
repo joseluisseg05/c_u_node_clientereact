@@ -1,8 +1,36 @@
 import React from "react";
+import Swal from 'sweetalert2';
+
+import clienteAxios from '../../config/axios'
 
 function DetallesPedido({pedido}) {
     
     const {cliente} = pedido;
+
+    const eliminarPedido = id => {        
+        Swal.fire({            
+            title: 'Quires eliminar este Pedido?',
+            text: "Una vez eliminado un Pedido, no se podra recuperar!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Eliminar!',
+            cancelButtonText: 'No, Cancelar'          
+        }).then((result) => {            
+            if (result.value) {                 
+                // llamado a axios                
+                clienteAxios.delete(`/pedidos/${id}`)                
+                .then(res => {                    
+                    Swal.fire(                    
+                        'Eliminado!',                    
+                        res.data.msj,                    
+                        'success'                    
+                    )                
+                })            
+            }          
+        })    
+    }
     
     return (
         <li className="pedido">
@@ -24,7 +52,7 @@ function DetallesPedido({pedido}) {
                 <p className="total">Total: ${pedido.total} </p>
             </div>
             <div className="acciones">
-                <button type="button" className="btn btn-rojo btn-eliminar">
+                <button type="button" className="btn btn-rojo btn-eliminar" onClick={ () => eliminarPedido(pedido._id) }>
                     <i className="fas fa-times"></i>
                     Eliminar Pedido
                 </button>

@@ -5,17 +5,18 @@ import DetallesPedido from './DetallesPedido';
 function Pedidos() {
 
   const [pedidos, guardarPedidos] = useState([]);
+
+  const consultarAPI = async () => {
+    //obtener pediodos 
+    const resultados = await clienteAxios.get('/pedidos');
+    //console.log(resultados)
+    guardarPedidos(resultados.data.pedidos);
+  }
   
   useEffect( ()=> {
-    const consultarAPI = async () => {
-      //obtener pediodos 
-      const resultados = await clienteAxios.get('/pedidos');
-      //console.log(resultados)
-      guardarPedidos(resultados.data.pedidos);
-    }
 
     consultarAPI()
-  }, [])
+  }, [pedidos])
 
   return (
     <Fragment>
